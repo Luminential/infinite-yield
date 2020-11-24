@@ -2,6 +2,15 @@
 -- \\ send me scripting requests please.
 -- \\ all of this is my work, nobody elses.
 
+local Hint = Instance.new("Hint")
+Hint.Name = "Hint"
+Hint.Parent = game:GetService("CoreGui")
+Hint.Text = "moreCmds.iy is launching..."
+
+while not game:IsLoaded() do Hint.Text = "moreCmds.iy is waiting for the game to finish loading." wait(1) end
+
+Hint:Destroy()
+
 local ServiceDictionary = setmetatable({},{__index = function(self,index) return game:GetService(index) end})
 
 local print = ServiceDictionary.RunService:IsStudio() and print or (function(str) return true end)
@@ -16,6 +25,11 @@ local gethiddenproperty = (gethiddenproperty ~= nil and gethiddenproperty) or (f
 local sethiddenproperty = (sethiddenproperty ~= nil and sethiddenproperty) or (function() return nil end)
 local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", true))()
 local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
+
+local moreCmdsFolder = Instance.new("Folder")
+moreCmdsFolder.Name = "Folder"
+moreCmdsFolder.Parent = ServiceDictionary.CoreGui
+moreCmdsFolder.AncestryChanged:Connect(function() moreCmdsFolder.Parent = ServiceDictionary.CoreGui end)
 
 local LightingSave = {
 	["Instances"] = {},
@@ -176,7 +190,20 @@ local plugin = {
 				local size = tonumber(args[1]) or 100
 
 				Humanoid:UnequipTools()
-				swait(2, function() Handle.Size = Vector3.new(size, size, size) end)
+				swait(2, function()
+					local SelectionBox = Instance.new("SelectionBox")
+					SelectionBox.Name = "iymc_selectionbox"
+					SelectionBox.Parent = moreCmdsFolder
+					SelectionBox.Color3 = Color3.fromRGB(180, 180, 180)
+					SelectionBox.LineThickness = 0.05
+					SelectionBox.Adornee = Handle
+					SelectionBox:GetPropertyChangedSignal("Adornee"):Connect(function()
+						if SelectionBox.Adornee == nil then
+							SelectionBox:Destroy()
+						end
+					end)
+					Handle.Size = Vector3.new(size, size, size)
+				end)
 				Humanoid:EquipTool(BackpackItem)
 			end
 		},
