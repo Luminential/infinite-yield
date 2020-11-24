@@ -100,33 +100,6 @@ local function swait(number, central_function)
 	return ServiceDictionary.RunService.Stepped:Wait()
 end
 
-pcall(function()
-	-- \\ built-in free gamepasses for the client
-	-- \\ i only use synapse so i would have no clue what exploits do not support this
-	coroutine.resume(coroutine.create(function()
-		local game_rawmetatable = getrawmetatable(game)
-		local game_unlocked = pcall(setreadonly, false)
-
-		if not game_unlocked then
-			return error("You're a fucking skid, imagine using a free exploit.")
-		end
-
-		local game_namecall_metamethod = game_rawmetatable["__namecall"]
-
-		game_rawmetatable.__namecall = newcclosure(function(self, ...)
-			local namecallmethod = getnamecallmethod()
-
-			if not checkcaller() then
-				if table.find({"userownsgamepassasync","playerownsasset"}, string.lower(namecallmethod)) then
-					return true
-				end
-			end
-
-			return game_namecall_metamethod(self, ...)
-		end)
-	end))
-end)
-
 local plugin = {
 	["PluginName"] = string.format("%s | moreCmds.iy", ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
 	["PluginDescription"] = ("More commands for Infinite Yield, created by " .. ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
