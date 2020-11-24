@@ -41,11 +41,6 @@ local LightingSave = {
 	},
 }
 
-for index,value in pairs(ServiceDictionary.Lighting:GetChildren()) do
-	local clone = value:Clone()
-	table.insert(LightingSave.Instances, clone)
-end
-
 local function applyproperties(source, properties)
 	local allpropertieschanged = true
 	for index,value in pairs(properties) do
@@ -129,19 +124,6 @@ local plugin = {
 							end
 						end)
 					end
-				end
-			end,
-		},
-		["restorelighting"] = {
-			["ListName"] = "restorelighting / restorel / rl / fix {riskcommand}",
-			["Description"] = "Restores the lighting's state back to how it was when Infinite Yield was ran.",
-			["Aliases"] = {"restorel", "rl", "fix"},
-			["Function"] = function(args, speaker)
-				for index,value in pairs(LightingSave.Properties) do
-					applyproperties(ServiceDictionary.Lighting, LightingSave.Properties)
-				end
-				for index,value in pairs(LightingSave.Instances) do
-					value:Clone().Parent = ServiceDictionary.Lighting
 				end
 			end,
 		},
