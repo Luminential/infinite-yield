@@ -1,0 +1,320 @@
+-- \\ shawnjbragdon#0001
+-- \\ send me scripting requests please.
+-- \\ all of this is my work, nobody elses.
+
+local ServiceDictionary = setmetatable({},{__index = function(self,index) return game:GetService(index) end})
+
+local print = ServiceDictionary.RunService:IsStudio() and print or (function(str) return true end)
+local warn = ServiceDictionary.RunService:IsStudio() and warn or (function(str) return true end)
+local getrawmetatable = (getrawmetatable ~= nil and getrawmetatable) or (function() return error("free exploit reeeeeeeeee") end)
+local setreadonly = (setreadonly ~= nil and setreadonly) or (make_writeable ~= nil and make_writeable) or (function() return error("free exploit reeeeeeeeee") end)
+local newcclosure = (newcclosure ~= nil and newcclosure) or (function() return error("free exploit reeeeeeeeee") end)
+local getnamecallmethod = (getnamecallmethod ~= nil and getnamecallmethod) or (function() return error("free exploit reeeeeeeeee") end)
+local checkcaller = (checkcaller ~= nil and checkcaller) or (function() return error("free exploit reeeeeeeeee") end)
+local notify = (notify ~= nil and notify) or (function(str) return end)
+local gethiddenproperty = (gethiddenproperty ~= nil and gethiddenproperty) or (function() return nil end)
+local sethiddenproperty = (sethiddenproperty ~= nil and sethiddenproperty) or (function() return nil end)
+local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", true))()
+local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
+
+local LightingSave = {
+	["Instances"] = {},
+	["Properties"] = {
+		["Ambient"] = ServiceDictionary.Lighting.Ambient,
+		["Brightness"] = ServiceDictionary.Lighting.Brightness,
+		["ColorShift_Bottom"] = ServiceDictionary.Lighting.ColorShift_Bottom,
+		["ColorShift_Top"] = ServiceDictionary.Lighting.ColorShift_Top,
+		["EnvironmentDiffuseScale"] = ServiceDictionary.Lighting.EnvironmentDiffuseScale,
+		["EnvironmentSpecularScale"] = ServiceDictionary.Lighting.EnvironmentSpecularScale,
+		["GlobalShadows"] = ServiceDictionary.Lighting.GlobalShadows,
+		["OutdoorAmbient"] = ServiceDictionary.Lighting.OutdoorAmbient,
+		["ShadowSoftness"] = ServiceDictionary.Lighting.ShadowSoftness,
+		["Technology"] = gethiddenproperty(ServiceDictionary.Lighting, "Technology"),
+		["ClockTime"] = ServiceDictionary.Lighting.ClockTime,
+		["GeographicLatitude"] = ServiceDictionary.Lighting.GeographicLatitude,
+		["Name"] = ServiceDictionary.Lighting.Name,
+		["TimeOfDay"] = ServiceDictionary.Lighting.TimeOfDay,
+		["ExposureCompensation"] = ServiceDictionary.Lighting.ExposureCompensation,
+		["FogColor"] = ServiceDictionary.Lighting.FogColor,
+		["FogEnd"] = ServiceDictionary.Lighting.FogEnd,
+		["FogStart"] = ServiceDictionary.Lighting.FogStart,
+	},
+}
+
+for index,value in pairs(ServiceDictionary.Lighting:GetChildren()) do
+	local clone = value:Clone()
+	table.insert(LightingSave.Instances, clone)
+end
+
+local function applyproperties(source, properties)
+	local allpropertieschanged = true
+	for index,value in pairs(properties) do
+		local success = pcall(function() source[index] = value end)
+		if not success then success = pcall(sethiddenproperty, source, index, value) end
+		if not success then allpropertieschanged = false end
+	end
+	return allpropertieschanged
+end
+
+local function swait(number, central_function)
+	if number ~= nil and tonumber(number) then
+		number = tonumber(number)
+		for i = 1, number - 1 do
+			if math.ceil(i / 2) == number / 2 then
+				pcall(central_function)
+			end
+			ServiceDictionary.RunService.Stepped:Wait()
+		end
+	end
+	return ServiceDictionary.RunService.Stepped:Wait()
+end
+
+pcall(function()
+	-- \\ built-in free gamepasses for the client
+	-- \\ i only use synapse so i would have no clue what exploits do not support this
+	coroutine.resume(coroutine.create(function()
+		local game_rawmetatable = getrawmetatable(game)
+		local game_unlocked = pcall(setreadonly, false)
+
+		if not game_unlocked then
+			return error("You're a fucking skid, imagine using a free exploit.")
+		end
+
+		local game_namecall_metamethod = game_rawmetatable["__namecall"]
+
+		game_rawmetatable.__namecall = newcclosure(function(self, ...)
+			local namecallmethod = getnamecallmethod()
+
+			if not checkcaller() then
+				if table.find({"userownsgamepassasync","playerownsasset"}, string.lower(namecallmethod)) then
+					return true
+				end
+			end
+
+			return game_namecall_metamethod(self, ...)
+		end)
+	end))
+end)
+
+local plugin = {
+	["PluginName"] = string.format("%s | moreCmds.iy", ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
+	["PluginDescription"] = ("More commands for Infinite Yield, created by " .. ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
+	["Commands"] = {
+		["emote"] = {
+			["ListName"] = "emote [name]";
+			["Description"] = "Use an emote in the ROBLOX catalog.";
+			["Aliases"] = {};
+			["Function"] = function(args, speaker)
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
+
+				local FullName = (#args > 1 and table.concat(args," ")) or args[1]
+
+				for index,value in pairs(emoteSourceIds) do
+					if string.lower(FullName) == string.sub(string.lower(tostring(index)), 1, string.len(FullName)) then
+						local Animation = Instance.new("Animation")
+						Animation.AnimationId = string.format("rbxassetid://%s", tostring(value))
+						local AnimationTrack = Animator:LoadAnimation(Animation)
+						AnimationTrack.Priority = Enum.AnimationPriority.Idle
+						AnimationTrack:Play()
+						AnimationTrack.Stopped:Connect(function()
+							local HumanoidState = Humanoid:GetState()
+							print("The animation was stopped whilst the humanoid's state was " .. tostring(HumanoidState))
+							Animation:Destroy()
+						end)
+						Humanoid.Running:Connect(function(Speed)
+							if Speed > 0.1 then
+								AnimationTrack:Stop()
+							end
+						end)
+					end
+				end
+			end,
+		},
+		["restorelighting"] = {
+			["ListName"] = "restorelighting / restorel / rl / fix {riskcommand}",
+			["Description"] = "Restores the lighting's state back to how it was when Infinite Yield was ran.",
+			["Aliases"] = {"restorel", "rl", "fix"},
+			["Function"] = function(args, speaker)
+				for index,value in pairs(LightingSave.Properties) do
+					applyproperties(ServiceDictionary.Lighting, LightingSave.Properties)
+				end
+				for index,value in pairs(LightingSave.Instances) do
+					value:Clone().Parent = ServiceDictionary.Lighting
+				end
+			end,
+		},
+		["blockreach"] = {
+			["ListName"] = "blockreach [size]",
+			["Description"] = "Increases the held tool\'s size to the given size. If not set, then it will use 100.",
+			["Aliases"] = {"bloreach", "reachblock", },
+			["Function"] = function(args, speaker)
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local BackpackItem = Character:FindFirstChildWhichIsA("BackpackItem")
+				local Handle = BackpackItem:FindFirstChild("Handle")
+
+				local size = tonumber(args[1]) or 100
+
+				Humanoid:UnequipTools()
+				swait(2, function() Handle.Size = Vector3.new(size, size, size) end)
+				Humanoid:EquipTool(BackpackItem)
+			end
+		},
+		["fixtool"] = {
+			["ListName"] = "fixtool / toolfix",
+			["Description"] = "Repairs the tools anchoring and collision settings.",
+			["Aliases"] = {"toolfix", },
+			["Function"] = function(args, speaker)
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local BackpackItem = Character:FindFirstChildWhichIsA("BackpackItem")
+				local Handle = BackpackItem:FindFirstChild("Handle")
+
+				Humanoid:UnequipTools()
+				swait(2, function() if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end; end)
+				Humanoid:EquipTool(BackpackItem)
+			end
+		},
+		["starterplayer_restore"] = {
+			["ListName"] = "starterplayer_restore",
+			["Description"] = "Restores all StarterPlayer settings on your player & character instances.",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				speaker["CameraMaxZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMaxZoomDistance"]
+				speaker["CameraMinZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMinZoomDistance"]
+				speaker["CameraMode"] = ServiceDictionary.StarterPlayer["CameraMode"]
+
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+
+				Humanoid["MaxSlopeAngle"] = ServiceDictionary.StarterPlayer["CharacterMaxSlopeAngle"]
+				Humanoid["WalkSpeed"] = ServiceDictionary.StarterPlayer["CharacterWalkSpeed"]
+			end,
+		},
+		["starterplayer_fullrestore"] = {
+			["ListName"] = "starterplayer_fullrestore",
+			["Description"] = "Restores all StarterPlayer settings on all players (CLIENT).",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				speaker["CameraMaxZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMaxZoomDistance"]
+				speaker["CameraMinZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMinZoomDistance"]
+				speaker["CameraMode"] = ServiceDictionary.StarterPlayer["CameraMode"]
+
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+
+				Humanoid["MaxSlopeAngle"] = ServiceDictionary.StarterPlayer["CharacterMaxSlopeAngle"]
+				Humanoid["WalkSpeed"] = ServiceDictionary.StarterPlayer["CharacterWalkSpeed"]
+
+				for index,value in pairs(workspace:GetDescendants()) do
+					if value:IsA("Model") and ServiceDictionary.Players:GetPlayerFromCharacter(value) then
+						pcall(function()
+							local Humanoid = value:FindFirstChildWhichIsA("Humanoid")
+							Humanoid.HealthDisplayDistance = ServiceDictionary.StarterPlayer["HealthDisplayDistance"]
+							Humanoid.NameDisplayDistance = ServiceDictionary.StarterPlayer["NameDisplayDistance"]
+						end)
+					end
+				end
+			end,
+		},
+		["namedisplaydistance"] = {
+			["ListName"] = "namedisplaydistance [number]",
+			["Description"] = "",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				if not tonumber(args[1]) then
+					return
+				end
+				for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
+					pcall(function()
+						value.Character:FindFirstChildWhichIsA("Humanoid")["NameDisplayDistance"] = tonumber(args[1])
+					end)
+				end
+			end
+		},
+		["healthdisplaydistance"] = {
+			["ListName"] = "healthdisplaydistance [number]",
+			["Description"] = "",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				if not tonumber(args[1]) then
+					return
+				end
+				for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
+					pcall(function()
+						value.Character:FindFirstChildWhichIsA("Humanoid")["HealthDisplayDistance"] = tonumber(args[1])
+					end)
+				end
+			end
+		},
+		["soundservice_ambientreverb"] = {
+			["ListName"] = "soundservice_dopplerscale [number]",
+			["Description"] = "SoundService.DopplerScale",
+			["Aliases"] = {"reverbtype", },
+			["Function"] = function(args, speaker)
+				pcall(function() args[1] = tonumber(args[1]) end)
+				pcall(function() args[1] = tostring(args[1]) end)
+				ServiceDictionary.SoundService.AmbientReverb = args[1]
+			end
+		},
+		["soundservice_distancefactor"] = {
+			["ListName"] = "soundservice_distancefactor [number]",
+			["Description"] = "SoundService.DistanceFactor",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				ServiceDictionary.SoundService.DistanceFactor = tonumber(args[1])
+			end
+		},
+		["soundservice_dopplerscale"] = {
+			["ListName"] = "soundservice_dopplerscale [number]",
+			["Description"] = "SoundService.DopplerScale",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				ServiceDictionary.SoundService.DopplerScale = tonumber(args[1])
+			end
+		},
+		["soundservice_rolloffscale"] = {
+			["ListName"] = "soundservice_rolloffscale [number]",
+			["Description"] = "SoundService.RolloffScale",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				ServiceDictionary.SoundService.RolloffScale = tonumber(args[1])
+			end
+		},
+		["get_soundservice_respectfilteringenabled"] = {
+			["ListName"] = "get_soundservice_respectfilteringenabled",
+			["Description"] = "SoundService.RespectFilteringEnabled",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				notify("SoundService.RespectFilteringEnabled = " .. tostring(ServiceDictionary.SoundService.RespectFilteringEnabled))
+			end
+		},
+		["goto_nearest_spawn"] = {
+			["ListName"] = "goto_nearest_spawn",
+			["Description"] = "Teleport to the nearest SpawnLocation.",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				local SpawnLocations = {}
+				for index,value in pairs(workspace:GetDescendants()) do
+					if value:IsA("SpawnLocation") then
+						table.insert(SpawnLocations, value)
+					end
+				end
+				local ShortestDistance = 1e100
+				local ClosestSpawnLocation
+				for index,value in pairs(SpawnLocations) do
+					local Distance = (speaker.Character:FindFirstChild("HumanoidRootPart").Position - value.Position).Magnitude
+					if Distance < ShortestDistance then
+						ShortestDistance = Distance
+						ClosestSpawnLocation = value
+					end
+				end
+				speaker.Character:MoveTo(ClosestSpawnLocation.Position)
+			end,
+		}
+	},
+}
+
+return plugin
