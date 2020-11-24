@@ -26,6 +26,10 @@ local sethiddenproperty = (sethiddenproperty ~= nil and sethiddenproperty) or (f
 local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", true))()
 local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
 
+local booleans = {
+	["emotesloop"] = false,
+}
+
 local moreCmdsFolder = Instance.new("Folder")
 moreCmdsFolder.Name = "Folder"
 moreCmdsFolder.Parent = ServiceDictionary.CoreGui
@@ -145,6 +149,7 @@ local plugin = {
 						local AnimationTrack = Animator:LoadAnimation(Animation)
 						AnimationTrack.Name = "iymc_emotetrack"
 						AnimationTrack.Priority = Enum.AnimationPriority.Idle
+						if booleans["emotesloop"] == true then AnimationTrack.Looped = true end
 						AnimationTrack:Play()
 						AnimationTrack.Stopped:Connect(function()
 							local HumanoidState = Humanoid:GetState()
@@ -173,6 +178,28 @@ local plugin = {
 					if value.Name == "iymc_emotetrack" then
 						value.Looped = true
 						value:Play()
+					end
+				end
+			end,
+		},
+		["emotesloop"] = {
+			["ListName"] = "emotesloop [boolean]",
+			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
+			["Aliases"] = {"make_emote_looped", },
+			["Function"] = function(args, speaker)
+				if table.find({"true", "false"}, string.lower(args[1])) then
+					args[1] = string.lower(args[1])
+					booleans["emotesloop"] = (args[1] == "true" and true) or (args[1] == "false" and false)
+					
+					local Character = speaker.Character
+					local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+					local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
+
+					for index,value in pairs(Animator:GetPlayingAnimationTracks()) do
+						if value.Name == "iymc_emotetrack" then
+							value.Looped = true
+							value:Play()
+						end
 					end
 				end
 			end,
