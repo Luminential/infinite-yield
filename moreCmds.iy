@@ -41,6 +41,24 @@ local LightingSave = {
 	},
 }
 
+local function getstrictpropertyvalue(inst, property)
+	local val = inst[property]
+
+	if typeof(val) == "EnumItem" then val = val.Name end
+	if typeof(val) == "number" then val = tostring(val) end
+	if typeof(val) ~= "string" then val = tostring(val) end
+
+	return val
+end
+
+local function getstrictvalue(val)
+	if typeof(val) == "EnumItem" then val = val.Name end
+	if typeof(val) == "number" then val = tostring(val) end
+	if typeof(val) ~= "string" then val = tostring(val) end
+
+	return val
+end
+
 local function applyproperties(source, properties)
 	local allpropertieschanged = true
 	for index,value in pairs(properties) do
@@ -111,6 +129,7 @@ local plugin = {
 						local Animation = Instance.new("Animation")
 						Animation.AnimationId = string.format("rbxassetid://%s", tostring(value))
 						local AnimationTrack = Animator:LoadAnimation(Animation)
+						AnimationTrack.Name = "iymc_emotetrack"
 						AnimationTrack.Priority = Enum.AnimationPriority.Idle
 						AnimationTrack:Play()
 						AnimationTrack.Stopped:Connect(function()
@@ -123,6 +142,23 @@ local plugin = {
 								AnimationTrack:Stop()
 							end
 						end)
+					end
+				end
+			end,
+		},
+		["loopemote"] = {
+			["ListName"] = "loopemote / make_emote_looped",
+			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
+			["Aliases"] = {"make_emote_looped", },
+			["Function"] = function(args, speaker)
+				local Character = speaker.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
+				
+				for index,value in pairs(Animator:GetPlayingAnimationTracks()) do
+					if value.Name == "iymc_emotetrack" then
+						value.Looped = true
+						value:Play()
 					end
 				end
 			end,
