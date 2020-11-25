@@ -20,6 +20,7 @@ local setreadonly = (setreadonly ~= nil and setreadonly) or (make_writeable ~= n
 local newcclosure = (newcclosure ~= nil and newcclosure) or (function() return error("free exploit reeeeeeeeee") end)
 local getnamecallmethod = (getnamecallmethod ~= nil and getnamecallmethod) or (function() return error("free exploit reeeeeeeeee") end)
 local checkcaller = (checkcaller ~= nil and checkcaller) or (function() return error("free exploit reeeeeeeeee") end)
+local firesignal = (firesignal ~= nil and firesignal) or (function() return error("free exploit reeeeeeeeee") end)
 local notify = (notify ~= nil and notify) or (function(str) return end)
 local gethiddenproperty = (gethiddenproperty ~= nil and gethiddenproperty) or (function() return nil end)
 local sethiddenproperty = (sethiddenproperty ~= nil and sethiddenproperty) or (function() return nil end)
@@ -27,8 +28,11 @@ local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", tr
 local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
 
 local booleans = {
-	["emotesloop"] = false,
+	["emotes_loop"] = false,
+	["broadcast_afk_status"] = true,
 }
+
+ServiceDictionary.UserInputService.WindowFocusReleased:Connect(function() if booleans["broadcast_afk_status"] == true then return end firesignal(ServiceDictionary.UserInputService.WindowFocused) end)
 
 local moreCmdsFolder = Instance.new("Folder")
 moreCmdsFolder.Name = "Folder"
@@ -122,7 +126,7 @@ local plugin = {
 						local AnimationTrack = Animator:LoadAnimation(Animation)
 						AnimationTrack.Name = "iymc_emotetrack"
 						AnimationTrack.Priority = Enum.AnimationPriority.Idle
-						if booleans["emotesloop"] == true then AnimationTrack.Looped = true end
+						if booleans["emotes_loop"] == true then AnimationTrack.Looped = true end
 						AnimationTrack:Play()
 						AnimationTrack.Stopped:Connect(function()
 							local HumanoidState = Humanoid:GetState()
@@ -162,7 +166,7 @@ local plugin = {
 			["Function"] = function(args, speaker)
 				if table.find({"true", "false"}, string.lower(args[1])) then
 					args[1] = string.lower(args[1])
-					booleans["emotesloop"] = (args[1] == "true" and true) or (args[1] == "false" and false)
+					booleans["emotes_loop"] = (args[1] == "true" and true) or (args[1] == "false" and false)
 					
 					local Character = speaker.Character
 					local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
@@ -174,6 +178,17 @@ local plugin = {
 							value:Play()
 						end
 					end
+				end
+			end,
+		},
+		["broadcastafkstatus"] = {
+			["ListName"] = "emotesloop [boolean]",
+			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
+			["Aliases"] = {"make_emote_looped", },
+			["Function"] = function(args, speaker)
+				if table.find({"true", "false"}, string.lower(args[1])) then
+					args[1] = string.lower(args[1])
+					booleans["broadcast_afk_status"] = (args[1] == "true" and true) or (args[1] == "false" and false)
 				end
 			end,
 		},
