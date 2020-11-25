@@ -192,6 +192,38 @@ local plugin = {
 				end
 			end,
 		},
+		["disablegameguis"] = {
+			["ListName"] = "disablegameguis",
+			["Description"] = "",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				for index,value in pairs(speaker:FindFirstChildWhichIsA("PlayerGui"):GetChildren()) do
+					if value:IsA("ScreenGui") and not table.find({"chat", "freecam"}, string.lower(value.Name)) then
+						value.Enabled = false
+					end
+				end
+			end,
+		},
+		["futureisbright"] = {
+			["ListName"] = "futureisbright",
+			["Description"] = "",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				sethiddenproperty(ServiceDictionary.Lighting, "Technology", Enum.Technology.Future)
+			end,
+		},
+		["threshold"] = {
+			["ListName"] = "threshold [number]",
+			["Description"] = "",
+			["Aliases"] = {},
+			["Function"] = function(args, speaker)
+				if not tonumber(args[1]) then
+					return
+				end
+				local BloomEffect = ServiceDictionary.Lighting:FindFirstChildWhichIsA("BloomEffect") or Instance.new("BloomEffect", ServiceDictionary.Lighting)
+				BloomEffect.Threshold = tonumber(args[1])
+			end,
+		},
 		["blockreach"] = {
 			["ListName"] = "blockreach [size]",
 			["Description"] = "Increases the held tool\'s size to the given size. If not set, then it will use 100.",
