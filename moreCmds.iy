@@ -182,9 +182,9 @@ local plugin = {
 			end,
 		},
 		["broadcastafkstatus"] = {
-			["ListName"] = "emotesloop [boolean]",
-			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
-			["Aliases"] = {"make_emote_looped", },
+			["ListName"] = "broadcastafkstatus [boolean]",
+			["Description"] = "",
+			["Aliases"] = {},
 			["Function"] = function(args, speaker)
 				if table.find({"true", "false"}, string.lower(args[1])) then
 					args[1] = string.lower(args[1])
