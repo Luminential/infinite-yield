@@ -238,17 +238,13 @@ local plugin = {
 
 				Humanoid:UnequipTools()
 				swait(2, function()
+					if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end;
 					local SelectionBox = Instance.new("SelectionBox")
 					SelectionBox.Name = "iymc_selectionbox"
 					SelectionBox.Parent = moreCmdsFolder
 					SelectionBox.Color3 = Color3.fromRGB(180, 180, 180)
 					SelectionBox.LineThickness = 0.05
 					SelectionBox.Adornee = Handle
-					SelectionBox:GetPropertyChangedSignal("Adornee"):Connect(function()
-						if SelectionBox.Adornee == nil then
-							SelectionBox:Destroy()
-						end
-					end)
 					Handle.Size = Vector3.new(size, size, size)
 				end)
 				Humanoid:EquipTool(BackpackItem)
