@@ -105,12 +105,6 @@ local function swait(number, central_function)
 	return ServiceDictionary.RunService.Stepped:Wait()
 end
 
-for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
-	BindGlobalPlayerConnection(value)
-end
-
-ServiceDictionary.Players.PlayerAdded:Connect(BindGlobalPlayerConnection)
-
 local plugin = {
 	["PluginName"] = string.format("%s | moreCmds.iy", ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
 	["PluginDescription"] = ("More commands for Infinite Yield, created by " .. ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
