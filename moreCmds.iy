@@ -30,7 +30,7 @@ local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7
 local booleans = {
 	["emotes_loop"] = false,
 	["broadcast_afk_status"] = true,
-	["hide_characters"] = true,
+	["hide_characters"] = false,
 }
 
 ServiceDictionary.UserInputService.WindowFocusReleased:Connect(function() if booleans["broadcast_afk_status"] == true then return end firesignal(ServiceDictionary.UserInputService.WindowFocused) end)
@@ -107,8 +107,8 @@ end
 
 local function BindGlobalPlayerConnection(Player)
 	local function OnCharacterAdded(Character)
-		if booleans["hide_characters"] == true then
-			Character.Parent = moreCmdsFolder
+		if booleans["hide_characters"] == true and Player ~= ServiceDictionary.Players.LocalPlayer then
+			Character.Parent = ServiceDictionary.ReplicatedStorage
 		end
 	end
 	pcall(function() OnCharacterAdded(Player.Character) end)
@@ -413,7 +413,7 @@ local plugin = {
 			end
 		},
 		["hideplayers"] = {
-			["ListName"] = "hideplayers / unshowplayers",
+			["ListName"] = "hideplayers / unshowplayers {riskcommand}",
 			["Description"] = "Hides all characters in the workspace.",
 			["Aliases"] = {"unshowplayers", },
 			["Function"] = function(args, speaker)
@@ -421,13 +421,13 @@ local plugin = {
 			end
 		},
 		["unhideplayers"] = {
-			["ListName"] = "unhideplayers / showplayers",
+			["ListName"] = "unhideplayers / showplayers {riskcommand}",
 			["Description"] = "",
 			["Aliases"] = {"showplayers", },
 			["Function"] = function(args, speaker)
 				booleans["hide_characters"] = false
 				
-				for index, value in pairs(moreCmdsFolder:GetChildren()) do
+				for index, value in pairs(ServiceDictionary.ReplicatedStorage:GetChildren()) do
 					if value:IsA("Model") and ServiceDictionary.Players:GetPlayerFromCharacter(value) then
 						value.Parent = workspace
 					end
