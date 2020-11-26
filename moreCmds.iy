@@ -238,7 +238,6 @@ local plugin = {
 
 				Humanoid:UnequipTools()
 				swait(2, function()
-					if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end;
 					local SelectionBox = Instance.new("SelectionBox")
 					SelectionBox.Name = "iymc_selectionbox"
 					SelectionBox.Parent = moreCmdsFolder
@@ -246,6 +245,7 @@ local plugin = {
 					SelectionBox.LineThickness = 0.05
 					SelectionBox.Adornee = Handle
 					Handle.Size = Vector3.new(size, size, size)
+					if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end;
 				end)
 				Humanoid:EquipTool(BackpackItem)
 			end
