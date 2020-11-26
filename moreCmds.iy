@@ -244,11 +244,11 @@ local plugin = {
 					SelectionBox.Color3 = Color3.fromRGB(180, 180, 180)
 					SelectionBox.LineThickness = 0.05
 					SelectionBox.Adornee = Handle
+					Handle.CanCollide = false
+					Handle.Massless = true
 					Handle.Size = Vector3.new(size, size, size)
 				end)
 				Humanoid:EquipTool(BackpackItem)
-				Handle.CanCollide = false
-				Handle.Massless = true
 				Humanoid.PlatformStand = true
 			end
 		},
@@ -263,12 +263,11 @@ local plugin = {
 				local Handle = BackpackItem:FindFirstChild("Handle")
 
 				Humanoid:UnequipTools()
-				swait(2)
+				swait(2, function()
+					Handle.CanCollide = false
+					Handle.Massless = true
+				end)
 				Humanoid:EquipTool(BackpackItem)
-				Handle.Anchored = false
-				Handle.CanCollide = false
-				Handle.Massless = true
-				Humanoid.PlatformStand = true
 			end
 		},
 		["starterplayer_restore"] = {
