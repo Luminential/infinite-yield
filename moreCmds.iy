@@ -245,6 +245,7 @@ local plugin = {
 					SelectionBox.LineThickness = 0.05
 					SelectionBox.Adornee = Handle
 					Handle.CanCollide = false
+					Handle.Anchored = false
 					Handle.Massless = true
 					Handle.Size = Vector3.new(size, size, size)
 				end)
@@ -265,6 +266,7 @@ local plugin = {
 				Humanoid:UnequipTools()
 				swait(2, function()
 					Handle.CanCollide = false
+					Handle.Anchored = false
 					Handle.Massless = true
 				end)
 				Humanoid:EquipTool(BackpackItem)
