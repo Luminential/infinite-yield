@@ -105,16 +105,6 @@ local function swait(number, central_function)
 	return ServiceDictionary.RunService.Stepped:Wait()
 end
 
-local function BindGlobalPlayerConnection(Player)
-	local function OnCharacterAdded(Character)
-		if booleans["hide_characters"] == true and Player ~= ServiceDictionary.Players.LocalPlayer then
-			Character.Parent = ServiceDictionary.ReplicatedStorage
-		end
-	end
-	pcall(function() OnCharacterAdded(Player.Character) end)
-	Player.CharacterAdded:Connect(OnCharacterAdded)
-end
-
 for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
 	BindGlobalPlayerConnection(value)
 end
@@ -410,28 +400,6 @@ local plugin = {
 			["Aliases"] = {},
 			["Function"] = function(args, speaker)
 				notify("SoundService.RespectFilteringEnabled = " .. tostring(ServiceDictionary.SoundService.RespectFilteringEnabled))
-			end
-		},
-		["hideplayers"] = {
-			["ListName"] = "hideplayers / unshowplayers {riskcommand}",
-			["Description"] = "Hides all characters in the workspace.",
-			["Aliases"] = {"unshowplayers", },
-			["Function"] = function(args, speaker)
-				booleans["hide_characters"] = true
-			end
-		},
-		["unhideplayers"] = {
-			["ListName"] = "unhideplayers / showplayers {riskcommand}",
-			["Description"] = "",
-			["Aliases"] = {"showplayers", },
-			["Function"] = function(args, speaker)
-				booleans["hide_characters"] = false
-				
-				for index, value in pairs(ServiceDictionary.ReplicatedStorage:GetChildren()) do
-					if value:IsA("Model") and ServiceDictionary.Players:GetPlayerFromCharacter(value) then
-						value.Parent = workspace
-					end
-				end
 			end
 		},
 		["goto_nearest_spawn"] = {
