@@ -247,8 +247,9 @@ local plugin = {
 					Handle.Size = Vector3.new(size, size, size)
 				end)
 				Humanoid:EquipTool(BackpackItem)
-				if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end;
-				Humanoid.PlatformStand = false
+				Handle.CanCollide = false
+				Handle.Massless = true
+				Humanoid.PlatformStand = true
 			end
 		},
 		["fixtool"] = {
@@ -264,8 +265,10 @@ local plugin = {
 				Humanoid:UnequipTools()
 				swait(2)
 				Humanoid:EquipTool(BackpackItem)
-				if Handle.Anchored == true then Handle.Anchored = false end; if Handle.CanCollide == true then Handle.CanCollide = false end;
-				Humanoid.PlatformStand = false
+				Handle.Anchored = false
+				Handle.CanCollide = false
+				Handle.Massless = true
+				Humanoid.PlatformStand = true
 			end
 		},
 		["starterplayer_restore"] = {
