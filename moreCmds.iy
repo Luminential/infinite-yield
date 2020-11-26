@@ -30,6 +30,7 @@ local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7
 local booleans = {
 	["emotes_loop"] = false,
 	["broadcast_afk_status"] = true,
+	["hide_characters"] = true,
 }
 
 ServiceDictionary.UserInputService.WindowFocusReleased:Connect(function() if booleans["broadcast_afk_status"] == true then return end firesignal(ServiceDictionary.UserInputService.WindowFocused) end)
@@ -103,6 +104,22 @@ local function swait(number, central_function)
 	end
 	return ServiceDictionary.RunService.Stepped:Wait()
 end
+
+local function BindGlobalPlayerConnection(Player)
+	local function OnCharacterAdded(Character)
+		if booleans["hide_characters"] == true then
+			Character.Parent = moreCmdsFolder
+		end
+	end
+	pcall(function() OnCharacterAdded(Player.Character) end)
+	Player.CharacterAdded:Connect(OnCharacterAdded)
+end
+
+for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
+	BindGlobalPlayerConnection(value)
+end
+
+ServiceDictionary.Players.PlayerAdded:Connect(BindGlobalPlayerConnection)
 
 local plugin = {
 	["PluginName"] = string.format("%s | moreCmds.iy", ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
@@ -393,6 +410,28 @@ local plugin = {
 			["Aliases"] = {},
 			["Function"] = function(args, speaker)
 				notify("SoundService.RespectFilteringEnabled = " .. tostring(ServiceDictionary.SoundService.RespectFilteringEnabled))
+			end
+		},
+		["hideplayers"] = {
+			["ListName"] = "hideplayers / unshowplayers",
+			["Description"] = "Hides all characters in the workspace.",
+			["Aliases"] = {"unshowplayers", },
+			["Function"] = function(args, speaker)
+				booleans["hide_characters"] = true
+			end
+		},
+		["unhideplayers"] = {
+			["ListName"] = "unhideplayers / showplayers",
+			["Description"] = "",
+			["Aliases"] = {"showplayers", },
+			["Function"] = function(args, speaker)
+				booleans["hide_characters"] = false
+				
+				for index, value in pairs(moreCmdsFolder:GetChildren()) do
+					if value:IsA("Model") and ServiceDictionary.Players:GetPlayerFromCharacter(value) then
+						value.Parent = workspace
+					end
+				end
 			end
 		},
 		["goto_nearest_spawn"] = {
