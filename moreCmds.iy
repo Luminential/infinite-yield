@@ -22,8 +22,8 @@ local getnamecallmethod = (getnamecallmethod ~= nil and getnamecallmethod) or (f
 local checkcaller = (checkcaller ~= nil and checkcaller) or (function() return error("free exploit reeeeeeeeee") end)
 local firesignal = (firesignal ~= nil and firesignal) or (function() return error("free exploit reeeeeeeeee") end)
 local notify = (notify ~= nil and notify) or (function(str) return end)
-local gethiddenproperty = (gethiddenproperty ~= nil and gethiddenproperty) or (function() return nil end)
-local sethiddenproperty = (sethiddenproperty ~= nil and sethiddenproperty) or (function() return nil end)
+local gethiddenproperty = --[[(gethiddenproperty ~= nil and gethiddenproperty) or]] (function() return end)
+local sethiddenproperty = --[[(gethiddenproperty ~= nil and gethiddenproperty) or]]  (function() return end)
 local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", true))()
 local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
 
@@ -49,7 +49,6 @@ local LightingSave = {
 		["GlobalShadows"] = ServiceDictionary.Lighting.GlobalShadows,
 		["OutdoorAmbient"] = ServiceDictionary.Lighting.OutdoorAmbient,
 		["ShadowSoftness"] = ServiceDictionary.Lighting.ShadowSoftness,
-		["Technology"] = gethiddenproperty(ServiceDictionary.Lighting, "Technology"),
 		["ClockTime"] = ServiceDictionary.Lighting.ClockTime,
 		["GeographicLatitude"] = ServiceDictionary.Lighting.GeographicLatitude,
 		["Name"] = ServiceDictionary.Lighting.Name,
@@ -404,7 +403,7 @@ local plugin = {
 				end
 				speaker.Character:MoveTo(ClosestSpawnLocation.Position)
 			end,
-		}
+		},
 	},
 }
 
