@@ -179,17 +179,6 @@ local plugin = {
 				end
 			end,
 		},
-		["broadcastafkstatus"] = {
-			["ListName"] = "broadcastafkstatus [boolean]",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				if table.find({"true", "false"}, string.lower(args[1])) then
-					args[1] = string.lower(args[1])
-					booleans["broadcast_afk_status"] = (args[1] == "true" and true) or (args[1] == "false" and false)
-				end
-			end,
-		},
 		["disablegameguis"] = {
 			["ListName"] = "disablegameguis",
 			["Description"] = "",
