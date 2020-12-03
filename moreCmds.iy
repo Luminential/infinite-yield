@@ -29,11 +29,8 @@ local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7
 
 local booleans = {
 	["emotes_loop"] = false,
-	["broadcast_afk_status"] = true,
 	["hide_characters"] = false,
 }
-
-ServiceDictionary.UserInputService.WindowFocusReleased:Connect(function() if booleans["broadcast_afk_status"] == true then return end firesignal(ServiceDictionary.UserInputService.WindowFocused) end)
 
 local moreCmdsFolder = Instance.new("Folder")
 moreCmdsFolder.Name = "Folder"
