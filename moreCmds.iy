@@ -249,6 +249,7 @@ local plugin = {
 					Handle.Massless = true
 				end)
 				Humanoid:EquipTool(BackpackItem)
+				Humanoid.PlatformStand = false
 			end
 		},
 		["starterplayer_restore"] = {
@@ -372,7 +373,7 @@ local plugin = {
 			["Function"] = function(args, speaker)
 				local SpawnLocations = {}
 				for index,value in pairs(workspace:GetDescendants()) do
-					if value:IsA("SpawnLocation") then
+					if value:IsA("SpawnLocation") and value.Enabled == true and value.Neutral == true then
 						table.insert(SpawnLocations, value)
 					end
 				end
