@@ -312,21 +312,25 @@ plugin.Commands["forcemouseiconbehavior"] = {
 };
 
 plugin.Commands["proximityprompts"] = {
-	ListName = "proximityprompts",
-	Description = "Fire all ProximityPrompt Instances in the Workspace.",
+	ListName = ("proximityprompts"),
+	Description = ("Fire all ProximityPrompt Instances in the Workspace."),
 	Aliases = {},
 	Function = function(arguments, speaker)
-		for index, value in pairs(workspace:GetDescendants()) do
-			if value:IsA("ProximityPrompt") then
-				fireproximityprompt(value)
+		if fireproximityprompt and typeof(fireproximityprompt) == "function" then
+			for index, value in pairs(workspace:GetDescendants()) do
+				if value:IsA("ProximityPrompt") then
+					fireproximityprompt(value)
+				end
 			end
+			return true
 		end
+		return coroutine.wrap(notify)("Your exploit does not support \'fireproximityprompt\'.")
 	end
 };
 
 plugin.Commands["cameraoffset"] = {
-	ListName = "cameraoffset / camoffset [x y z]",
-	Description = "",
+	ListName = ("cameraoffset / camoffset [x y z]"),
+	Description = (""),
 	Aliases = {},
 	Function = function(arguments, speaker)
 		local Character = speaker.Character
