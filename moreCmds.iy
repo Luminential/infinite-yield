@@ -159,7 +159,7 @@ plugin.Commands = {};
 
 plugin.Commands["emote"] = {
 	ListName = ("emote [name]");
-	Description = ("Use an Emote from the Roblox catalog.");
+	Description = ("Use an emote from the Roblox catalog.");
 	Aliases = {};
 	Function = function(arguments, speaker)
 		local Character = speaker.Character;
@@ -306,5 +306,37 @@ plugin.Commands["forcemouseiconbehavior"] = {
 		return notify("Invalid mouse icon behavior.")
 	end;
 };
+
+plugin.Commands["proximityprompts"] = {
+	ListName = "proximityprompts",
+	Description = "Fire all ProximityPrompt Instances in the Workspace.",
+	Aliases = {},
+	Function = function(arguments, speaker)
+		for index, value in pairs(workspace:GetDescendants()) do
+			if value:IsA("ProximityPrompt") then
+				fireproximityprompt(value)
+			end
+		end
+	end
+};
+
+plugin.Commands["cameraoffset"] = {
+	ListName = "cameraoffset / camoffset [x y z]",
+	Description = "",
+	Aliases = {},
+	Function = function(arguments, speaker)
+		local Character = speaker.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		if arguments[1] and typeof(arguments[1]) == "number" then
+			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(0, 1, 1)) + Vector3.new(arguments[1], 0, 0)
+		end
+		if arguments[2] and typeof(arguments[2]) == "number" then
+			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(0, 1, 0)) + Vector3.new(0, arguments[2], 0)
+		end
+		if arguments[3] and typeof(arguments[3]) == "number" then
+			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(1, 1, 0)) + Vector3.new(0, 0, arguments[3])
+		end
+	end
+}
 
 return plugin
