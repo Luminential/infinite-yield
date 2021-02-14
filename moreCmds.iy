@@ -1,395 +1,310 @@
-local ServiceDictionary = setmetatable({},{__index = function(self,index) return game:GetService(index) end})
+getgenv().shawnjbragdon = getgenv().shawnjbragdon or ({});
 
-local print = ServiceDictionary.RunService:IsStudio() and print or (function(str) return true end)
-local warn = ServiceDictionary.RunService:IsStudio() and warn or (function(str) return true end)
-local getrawmetatable = (getrawmetatable ~= nil and getrawmetatable) or (function() return error("free exploit reeeeeeeeee") end)
-local setreadonly = (setreadonly ~= nil and setreadonly) or (make_writeable ~= nil and make_writeable) or (function() return error("free exploit reeeeeeeeee") end)
-local newcclosure = (newcclosure ~= nil and newcclosure) or (function() return error("free exploit reeeeeeeeee") end)
-local getnamecallmethod = (getnamecallmethod ~= nil and getnamecallmethod) or (function() return error("free exploit reeeeeeeeee") end)
-local checkcaller = (checkcaller ~= nil and checkcaller) or (function() return error("free exploit reeeeeeeeee") end)
-local firesignal = (firesignal ~= nil and firesignal) or (function() return error("free exploit reeeeeeeeee") end)
-local notify = (notify ~= nil and notify) or (function(str) return end)
-local gethiddenproperty = --[[(gethiddenproperty ~= nil and gethiddenproperty) or]] (function() return end)
-local sethiddenproperty = --[[(gethiddenproperty ~= nil and gethiddenproperty) or]]  (function() return end)
-local emoteIds = loadstring(game:HttpGet("https://pastebin.com/raw/PYqzUWbd", true))()
-local emoteSourceIds = loadstring(game:HttpGet("https://pastebin.com/raw/KbRbLT7E", true))()
-
-local booleans = {["emotes_loop"] = false,}
-
-local moreCmdsFolder = Instance.new("Folder")
-moreCmdsFolder.Name = "Folder"
-moreCmdsFolder.Parent = ServiceDictionary.CoreGui
-moreCmdsFolder.AncestryChanged:Connect(function() moreCmdsFolder.Parent = ServiceDictionary.CoreGui end)
-
-local LightingSave = {
-	["Instances"] = {},
-	["Properties"] = {
-		["Ambient"] = ServiceDictionary.Lighting.Ambient,
-		["Brightness"] = ServiceDictionary.Lighting.Brightness,
-		["ColorShift_Bottom"] = ServiceDictionary.Lighting.ColorShift_Bottom,
-		["ColorShift_Top"] = ServiceDictionary.Lighting.ColorShift_Top,
-		["EnvironmentDiffuseScale"] = ServiceDictionary.Lighting.EnvironmentDiffuseScale,
-		["EnvironmentSpecularScale"] = ServiceDictionary.Lighting.EnvironmentSpecularScale,
-		["GlobalShadows"] = ServiceDictionary.Lighting.GlobalShadows,
-		["OutdoorAmbient"] = ServiceDictionary.Lighting.OutdoorAmbient,
-		["ShadowSoftness"] = ServiceDictionary.Lighting.ShadowSoftness,
-		["ClockTime"] = ServiceDictionary.Lighting.ClockTime,
-		["GeographicLatitude"] = ServiceDictionary.Lighting.GeographicLatitude,
-		["Name"] = ServiceDictionary.Lighting.Name,
-		["TimeOfDay"] = ServiceDictionary.Lighting.TimeOfDay,
-		["ExposureCompensation"] = ServiceDictionary.Lighting.ExposureCompensation,
-		["FogColor"] = ServiceDictionary.Lighting.FogColor,
-		["FogEnd"] = ServiceDictionary.Lighting.FogEnd,
-		["FogStart"] = ServiceDictionary.Lighting.FogStart,
-	},
-}
-
-local function getstrictpropertyvalue(inst, property)
-	local val = inst[property]
-
-	if typeof(val) == "EnumItem" then val = val.Name end
-	if typeof(val) == "number" then val = tostring(val) end
-	if typeof(val) ~= "string" then val = tostring(val) end
-
-	return val
-end
-
-local function getstrictvalue(val)
-	if typeof(val) == "EnumItem" then val = val.Name end
-	if typeof(val) == "number" then val = tostring(val) end
-	if typeof(val) ~= "string" then val = tostring(val) end
-
-	return val
-end
-
-local function applyproperties(source, properties)
-	local allpropertieschanged = true
-	for index,value in pairs(properties) do
-		local success = pcall(function() source[index] = value end)
-		if not success then success = pcall(sethiddenproperty, source, index, value) end
-		if not success then allpropertieschanged = false end
+for index, value in pairs(getgenv().shawnjbragdon) do
+	if value and typeof(value) == "RBXScriptConnection" then
+		pcall(value.Disconnect, value);
 	end
-	return allpropertieschanged
 end
 
-local function swait(number, central_function)
-	if number ~= nil and tonumber(number) then
-		number = tonumber(number)
-		for i = 1, number - 1 do
-			if math.ceil(i / 2) == number / 2 then
-				pcall(central_function)
-			end
-			ServiceDictionary.RunService.Stepped:Wait()
+local emoteIds = {
+	["Agree"] = 4849487550;
+	["Disagree"] = 4849495710;
+	["Power Blast"] = 4849497510;
+	["Happy"] = 4849499887;
+	["Sad"] = 4849502101;
+	["Bunny Hop"] = 4646296016;
+	["Peanut Butter Jelly Dance"] = 4390121879;
+	["Around Town"] = 3576747102;
+	["Top Rock"] = 3570535774;
+	["Jumping Wave"] = 4940602656;
+	["Keeping Time"] = 4646306072;
+	["Fashionable"] = 3576745472;
+	["Robot"] = 3576721660;
+	["Twirl"] = 3716633898;
+	["Jacks"] = 3570649048;
+	["TPose"] = 3576719440;
+	["Shy"] = 3576717965;
+	["Monkey"] = 3716636630;
+	["Borock's Rage"] = 3236848555;
+	["Ud'zal's Summoning"] = 3307604888;
+	["Hype Dance"] = 3696757129;
+	["Godlike"] = 3823158750;
+	["Swish"] = 3821527813;
+	["Sneaky"] = 3576754235;
+	["Side to Side"] = 3762641826;
+	["Greatest"] = 3762654854;
+	["Louder"] = 3576751796;
+	["Celebrate"] = 3994127840;
+	["Haha"] = 4102315500;
+	["Get Out"] = 3934984583;
+	["Tree"] = 4049634387;
+	["Fishing"] = 3994129128;
+	["Fast Hands"] = 4272351660;
+	["Y"] = 4391211308;
+	["Zombie"] = 4212496830;
+	["Baby Dance"] = 4272484885;
+	["Line Dance"] = 4049646104;
+	["Dizzy"] = 3934986896;
+	["Shuffle"] = 4391208058;
+	["Dorky Dance"] = 4212499637;
+	["Bodybuilder"] = 3994130516;
+	["Idol"] = 4102317848;
+	["Fancy Feet"] = 3934988903;
+	["Curtsy"] = 4646306583;
+	["Air Dance"] = 4646302011;
+	["Air Guitar"] = 3696761354;
+	["Chicken Dance"] = 4849493309;
+	["Sleep"] = 4689362868;
+	["Hero Landing"] = 5104377791;
+	["Confused"] = 4940592718;
+	["Cower"] = 4940597758;
+	["Tantrum"] = 5104374556;
+	["Bored"] = 5230661597;
+	["Beckon"] = 5230615437;
+	["Hello"] = 3576686446;
+	["Salute"] = 3360689775;
+	["Stadium"] = 3360686498;
+	["Tilt"] = 3360692915;
+	["Point"] = 3576823880;
+	["Shrug"] = 3576968026;
+	["Heisman Pose"] = 3696763549;
+	["Cha-Cha"] = 3696764866;
+	["Country Line Dance - Lil Nas X (LNX)"] = 5915780563;
+	["Panini Dance - Lil Nas X (LNX)"] = 5915781665;
+	["HOLIDAY Dance - Lil Nas X (LNX)"] = 5938396308;
+	["Rodeo Dance - Lil Nas X (LNX)"] = 5938397555;
+	["Old Town Road Dance - Lil Nas X (LNX)"] = 5938394742;
+	["High Wave"] = 5915776835;
+	["Rock On"] = 5915782672;
+};
+
+local emoteSourceIds = {
+	["Agree"] = 4841397952;
+	["Disagree"] = 4841401869;
+	["Power Blast"] = 4841403964;
+	["Happy"] = 4841405708;
+	["Sad"] = 4841407203;
+	["Bunny Hop"] = 4641985101;
+	["Peanut Butter Jelly Dance"] = 4406555273;
+	["Around Town"] = 3303391864;
+	["Top Rock"] = 3361276673;
+	["Jumping Wave"] = 4940564896;
+	["Keeping Time"] = 4555808220;
+	["Fashionable"] = 3333331310;
+	["Robot"] = 3338025566;
+	["Twirl"] = 3334968680;
+	["Jacks"] = 3338066331;
+	["TPose"] = 3338010159;
+	["Shy"] = 3337978742;
+	["Monkey"] = 3333499508;
+	["Borock's Rage"] = 3236842542;
+	["Ud'zal's Summoning"] = 3303161675;
+	["Hype Dance"] = 3695333486;
+	["Godlike"] = 3337994105;
+	["Swish"] = 3361481910;
+	["Sneaky"] = 3334424322;
+	["Side to Side"] = 3333136415;
+	["Greatest"] = 3338042785;
+	["Louder"] = 3338083565;
+	["Celebrate"] = 3338097973;
+	["Haha"] = 3337966527;
+	["Get Out"] = 3333272779;
+	["Tree"] = 4049551434;
+	["Fishing"] = 3334832150;
+	["Fast Hands"] = 4265701731;
+	["Y"] = 4349285876;
+	["Zombie"] = 4210116953;
+	["Baby Dance"] = 4265725525;
+	["Line Dance"] = 4049037604;
+	["Dizzy"] = 3361426436;
+	["Shuffle"] = 4349242221;
+	["Dorky Dance"] = 4212455378;
+	["BodyBuilder"] = 3333387824;
+	["Idol"] = 4101966434;
+	["Fancy Feet"] = 3333432454;
+	["Curtsy"] = 4555816777;
+	["Air Dance"] = 4555782893;
+	["Air Guitar"] = 3695300085;
+	["Chicken Dance"] = 4841399916;
+	["Sleep"] = 4686925579;
+	["Hero Landing"] = 5104344710;
+	["Confused"] = 4940561610;
+	["Cower"] = 4940563117;
+	["Tantrum"] = 5104341999;
+	["Bored"] = 5230599789;
+	["Beckon"] = 5230598276;
+	["Hello"] = 3344650532;
+	["Salute"] = 3333474484;
+	["Stadium"] = 3338055167;
+	["Tilt"] = 3334538554;
+	["Point"] = 3344585679;
+	["Shrug"] = 3334392772;
+	["Heisman Pose"] = 3695263073;
+	["Cha-Cha"] = 3695322025;
+	["Country Line Dance - Lil Nas X (LNX)"] = 5915712534;
+	["Panini Dance - Lil Nas X (LNX)"] = 5915713518;
+	["HOLIDAY Dance - Lil Nas X (LNX)"] = 5937558680;
+	["Rodeo Dance - Lil Nas X (LNX)"] = 5918728267;
+	["Old Town Road Dance - Lil Nas X (LNX)"] = 5937560570;
+	["High Wave"] = 5915690960;
+	["Rock On"] = 5915714366;
+};
+
+local version = "1.0"
+local plugin = {};
+
+plugin.PluginName = string.format("MoreCmds %s", version);
+plugin.PluginDescription = "";
+plugin.Commands = {};
+
+plugin.Commands["emote"] = {
+	ListName = ("emote [name]");
+	Description = ("Use an Emote from the Roblox catalog.");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		local Character = speaker.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local Animator = Humanoid:FindFirstChildWhichIsA("Animator");
+		for index, value in pairs(emoteSourceIds) do
+			local i = tostring(index);
+			if string.lower(arguments[1]) == string.lower(string.sub(i, 1, string.len(arguments[1]))) then
+				local Animation = Instance.new("Animation");
+				Animation.Name = "";
+				Animation.AnimationId = string.format("rbxassetid://%s", string.match());
+				local AnimationTrack = Animator:LoadAnimation(Animation);
+				AnimationTrack.Name = "";
+				AnimationTrack.Priority = Enum.AnimationPriority.Idle
+				if string.lower(arguments[2]) == string.lower(string.sub("false", 1, string.len(arguments[2]))) then
+					AnimationTrack.Looped = false;
+				elseif string.lower(arguments[2]) == string.lower(string.sub("true", 1, string.len(arguments[2]))) then
+					AnimationTrack.Looped = true;
+				end;
+				AnimationTrack:Play()
+				local onAnimationStopped = function()
+					pcall(Animation.Destroy, Animation);
+					pcall(AnimationTrack.Destroy, AnimationTrack);
+				end;
+				Humanoid.Running:Connect(function(Torvel)
+					if math.abs(Torvel) > 2 then
+						coroutine.wrap(onAnimationStopped)()
+					end
+				end)
+				AnimationTrack.Stopped:Connect(onAnimationStopped);
+			end;
+		end;
+	end;
+};
+
+plugin.Commands["technology"] = {
+	ListName = ("technology [name]");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		local Lighting = game:GetService("Lighting")
+		if string.lower(arguments[1]) == string.sub("future", 1, string.len(arguments[1])) then
+			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Future);
+		elseif string.lower(arguments[1]) == string.sub("shadowmap", 1, string.len(arguments[1])) then
+			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.ShadowMap);
+		elseif string.lower(arguments[1]) == string.sub("voxel", 1, string.len(arguments[1])) then
+			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Voxel);
+		elseif string.lower(arguments[1]) == string.sub("compatibility", 1, string.len(arguments[1])) then
+			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Compatibility);
+		end
+		coroutine.wrap(notify)(string.format("Unknown Technology: %s", arguments[1]))
+	end;
+};
+
+plugin.Commands["blockreach"] = {
+	ListName = ("blockreach [distance]");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		local RunService = game:GetService("RunService")
+		local Character = speaker.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		local BackpackItem = Character:FindFirstChildWhichIsA("Tool")
+		local Handle = BackpackItem:FindFirstChild("Handle")
+
+		if arguments[1] and typeof(arguments[1]) == "string" and tonumber(arguments[1]) then
+			arguments[1] = tonumber(arguments[1]);
+
+			Humanoid:UnequipTools();
+			RunService.Stepped:Wait();
+			local SelectionBox = Instance.new("SelectionBox")
+			SelectionBox.Name = "SelectionBox"
+			SelectionBox.Color3 = Color3.fromRGB(255, 255, 255)
+			SelectionBox.LineThickness = 0.05
+			SelectionBox.Adornee = Handle
+
+			BackpackItem.Equipped:Connect(function()
+				SelectionBox.Adornee = Handle
+			end);
+
+			BackpackItem.Unequipped:Connect(function()
+				SelectionBox.Adornee = nil
+			end);
+
+			Handle.Anchored = false
+			Handle.CanCollide = false
+			Handle.Massless = true
+			Handle.Size = Vector3.new(arguments[1], arguments[1], arguments[1])
+			RunService.Stepped:Wait();
+			Humanoid:EquipTool(BackpackItem);
+			Humanoid.PlatformStand = false
 		end
 	end
-	return ServiceDictionary.RunService.Stepped:Wait()
-end
+};
 
-local plugin = {
-	["PluginName"] = string.format("%s | moreCmds.iy", ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
-	["PluginDescription"] = ("More commands for Infinite Yield, created by " .. ServiceDictionary.Players:GetNameFromUserIdAsync(1708043824));
-	["Commands"] = {
-		["emote"] = {
-			["ListName"] = "emote [name]";
-			["Description"] = "Use an emote in the ROBLOX catalog.";
-			["Aliases"] = {};
-			["Function"] = function(args, speaker)
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-				local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
+plugin.Commands["lockvelocity"] = {
+	ListName = ("lockvelocity");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		getgenv().shawnjbragdon["velocitylock"] = game:GetService("RunService").Stepped:Connect(function()
+			if speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid") then
+				local Character = speaker.Character;
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+				Humanoid.AutoRotate = false;
+				if Humanoid.RootPart then
+					Humanoid.RootPart.Velocity = Vector3.new(0, 0, 0);
+					Humanoid.RootPart.RotVelocity = Vector3.new(0, 0, 0);
+				end;
+			end;
+		end);
+	end;
+};
 
-				local FullName = (#args > 1 and table.concat(args," ")) or args[1]
+plugin.Commands["unlockvelocity"] = {
+	ListName = ("unlockvelocity / releasevelocity");
+	Description = ("");
+	Aliases = {"releasevelocity"};
+	Function = function(arguments, speaker)
+		for index, value in pairs(getgenv().shawnjbragdon) do
+			if value and typeof(value) == "RBXScriptConnection" and tostring(index) == "velocitylock" then
+				value:Disconnect();
+			end;
+		end;
+		if speaker.Character and speaker.Character:FindFirstChildWhichIsA("Humanoid") then
+			speaker.Character:FindFirstChildWhichIsA("Humanoid").AutoRotate = true;
+		end
+	end;
+};
 
-				for index,value in pairs(emoteSourceIds) do
-					if string.lower(FullName) == string.sub(string.lower(tostring(index)), 1, string.len(FullName)) then
-						local Animation = Instance.new("Animation")
-						Animation.AnimationId = string.format("rbxassetid://%s", tostring(value))
-						local AnimationTrack = Animator:LoadAnimation(Animation)
-						AnimationTrack.Name = "iymc_emotetrack"
-						AnimationTrack.Priority = Enum.AnimationPriority.Idle
-						if booleans["emotes_loop"] == true then AnimationTrack.Looped = true end
-						AnimationTrack:Play()
-						AnimationTrack.Stopped:Connect(function()
-							local HumanoidState = Humanoid:GetState()
-							print("The animation was stopped whilst the humanoid's state was " .. tostring(HumanoidState))
-							Animation:Destroy()
-						end)
-						Humanoid.Running:Connect(function(Speed)
-							if Speed > 0.1 then
-								AnimationTrack:Stop()
-							end
-						end)
-					end
-				end
-			end,
-		},
-		["loopemote"] = {
-			["ListName"] = "loopemote / make_emote_looped",
-			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
-			["Aliases"] = {"make_emote_looped", },
-			["Function"] = function(args, speaker)
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-				local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
-
-				for index,value in pairs(Animator:GetPlayingAnimationTracks()) do
-					if value.Name == "iymc_emotetrack" then
-						value.Looped = true
-						value:Play()
-					end
-				end
-			end,
-		},
-		["emotesloop"] = {
-			["ListName"] = "emotesloop [boolean]",
-			["Description"] = "Loops your current & highest priority animation. (Does not work with non-caller animations for security reasons)",
-			["Aliases"] = {"make_emote_looped", },
-			["Function"] = function(args, speaker)
-				if table.find({"true", "false"}, string.lower(args[1])) then
-					args[1] = string.lower(args[1])
-					booleans["emotes_loop"] = (args[1] == "true" and true) or (args[1] == "false" and false)
-
-					local Character = speaker.Character
-					local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-					local Animator = Humanoid:FindFirstChildWhichIsA("Animator")
-
-					for index,value in pairs(Animator:GetPlayingAnimationTracks()) do
-						if value.Name == "iymc_emotetrack" then
-							value.Looped = true
-							value:Play()
-						end
-					end
-				end
-			end,
-		},
-		["disablegameguis"] = {
-			["ListName"] = "disablegameguis",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				for index,value in pairs(speaker:FindFirstChildWhichIsA("PlayerGui"):GetChildren()) do
-					if value:IsA("ScreenGui") and not table.find({"chat", "freecam"}, string.lower(value.Name)) then
-						value.Enabled = false
-					end
-				end
-			end,
-		},
-		["futureisbright"] = {
-			["ListName"] = "futureisbright",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				sethiddenproperty(ServiceDictionary.Lighting, "Technology", Enum.Technology.Future)
-			end,
-		},
-		["threshold"] = {
-			["ListName"] = "threshold [number]",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				if not tonumber(args[1]) then
-					return
-				end
-				local BloomEffect = ServiceDictionary.Lighting:FindFirstChildWhichIsA("BloomEffect") or Instance.new("BloomEffect", ServiceDictionary.Lighting)
-				BloomEffect.Threshold = tonumber(args[1])
-			end,
-		},
-		["blockreach"] = {
-			["ListName"] = "blockreach [size]",
-			["Description"] = "Increases the held tool\'s size to the given size. If not set, then it will use 100.",
-			["Aliases"] = {"bloreach", "reachblock", },
-			["Function"] = function(args, speaker)
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-				local BackpackItem = Character:FindFirstChildWhichIsA("Tool")
-				local Handle = BackpackItem:FindFirstChild("Handle")
-
-				local size = tonumber(args[1]) or 100
-
-				Humanoid:UnequipTools()
-				swait(2, function()
-					local SelectionBox = Instance.new("SelectionBox")
-					SelectionBox.Name = "iymc_selectionbox"
-					SelectionBox.Parent = moreCmdsFolder
-					SelectionBox.Color3 = Color3.fromRGB(180, 180, 180)
-					SelectionBox.LineThickness = 0.05
-					SelectionBox.Adornee = Handle
-
-					BackpackItem.Equipped:Connect(function()
-						SelectionBox.Adornee = Handle
-					end)
-
-					BackpackItem.Unequipped:Connect(function()
-						SelectionBox.Adornee = nil
-					end)
-
-					Handle.CanCollide = false
-					Handle.Anchored = false
-					Handle.Massless = true
-					Handle.Size = Vector3.new(size, size, size)
-				end)
-				Humanoid:EquipTool(BackpackItem)
-				Humanoid.PlatformStand = false
-			end
-		},
-		["fixtool"] = {
-			["ListName"] = "fixtool / toolfix",
-			["Description"] = "Repairs the tools anchoring and collision settings.",
-			["Aliases"] = {"toolfix", },
-			["Function"] = function(args, speaker)
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-				local BackpackItem = Character:FindFirstChildWhichIsA("BackpackItem")
-				local Handle = BackpackItem:FindFirstChild("Handle")
-
-				Humanoid:UnequipTools()
-				swait(2, function()
-					Handle.CanCollide = false
-					Handle.Anchored = false
-					Handle.Massless = true
-				end)
-				Humanoid:EquipTool(BackpackItem)
-				Humanoid.PlatformStand = false
-			end
-		},
-		["starterplayer_restore"] = {
-			["ListName"] = "starterplayer_restore",
-			["Description"] = "Restores all StarterPlayer settings on your player & character instances.",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				speaker["CameraMaxZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMaxZoomDistance"]
-				speaker["CameraMinZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMinZoomDistance"]
-				speaker["CameraMode"] = ServiceDictionary.StarterPlayer["CameraMode"]
-
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-
-				Humanoid["MaxSlopeAngle"] = ServiceDictionary.StarterPlayer["CharacterMaxSlopeAngle"]
-				Humanoid["WalkSpeed"] = ServiceDictionary.StarterPlayer["CharacterWalkSpeed"]
-			end,
-		},
-		["starterplayer_fullrestore"] = {
-			["ListName"] = "starterplayer_fullrestore",
-			["Description"] = "Restores all StarterPlayer settings on all players (CLIENT).",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				speaker["CameraMaxZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMaxZoomDistance"]
-				speaker["CameraMinZoomDistance"] = ServiceDictionary.StarterPlayer["CameraMinZoomDistance"]
-				speaker["CameraMode"] = ServiceDictionary.StarterPlayer["CameraMode"]
-
-				local Character = speaker.Character
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-
-				Humanoid["MaxSlopeAngle"] = ServiceDictionary.StarterPlayer["CharacterMaxSlopeAngle"]
-				Humanoid["WalkSpeed"] = ServiceDictionary.StarterPlayer["CharacterWalkSpeed"]
-
-				for index,value in pairs(workspace:GetDescendants()) do
-					if value:IsA("Model") and ServiceDictionary.Players:GetPlayerFromCharacter(value) then
-						pcall(function()
-							local Humanoid = value:FindFirstChildWhichIsA("Humanoid")
-							Humanoid.HealthDisplayDistance = ServiceDictionary.StarterPlayer["HealthDisplayDistance"]
-							Humanoid.NameDisplayDistance = ServiceDictionary.StarterPlayer["NameDisplayDistance"]
-						end)
-					end
-				end
-			end,
-		},
-		["namedisplaydistance"] = {
-			["ListName"] = "namedisplaydistance [number]",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				if not tonumber(args[1]) then
-					return
-				end
-				for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
-					pcall(function()
-						value.Character:FindFirstChildWhichIsA("Humanoid")["NameDisplayDistance"] = tonumber(args[1])
-					end)
-				end
-			end
-		},
-		["healthdisplaydistance"] = {
-			["ListName"] = "healthdisplaydistance [number]",
-			["Description"] = "",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				if not tonumber(args[1]) then
-					return
-				end
-				for index,value in pairs(ServiceDictionary.Players:GetPlayers()) do
-					pcall(function()
-						value.Character:FindFirstChildWhichIsA("Humanoid")["HealthDisplayDistance"] = tonumber(args[1])
-					end)
-				end
-			end
-		},
-		["soundservice_ambientreverb"] = {
-			["ListName"] = "soundservice_dopplerscale [number]",
-			["Description"] = "SoundService.DopplerScale",
-			["Aliases"] = {"reverbtype", },
-			["Function"] = function(args, speaker)
-				pcall(function() args[1] = tonumber(args[1]) end)
-				pcall(function() args[1] = tostring(args[1]) end)
-				ServiceDictionary.SoundService.AmbientReverb = args[1]
-			end
-		},
-		["soundservice_distancefactor"] = {
-			["ListName"] = "soundservice_distancefactor [number]",
-			["Description"] = "SoundService.DistanceFactor",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				ServiceDictionary.SoundService.DistanceFactor = tonumber(args[1])
-			end
-		},
-		["soundservice_dopplerscale"] = {
-			["ListName"] = "soundservice_dopplerscale [number]",
-			["Description"] = "SoundService.DopplerScale",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				ServiceDictionary.SoundService.DopplerScale = tonumber(args[1])
-			end
-		},
-		["soundservice_rolloffscale"] = {
-			["ListName"] = "soundservice_rolloffscale [number]",
-			["Description"] = "SoundService.RolloffScale",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				ServiceDictionary.SoundService.RolloffScale = tonumber(args[1])
-			end
-		},
-		["get_soundservice_respectfilteringenabled"] = {
-			["ListName"] = "get_soundservice_respectfilteringenabled",
-			["Description"] = "SoundService.RespectFilteringEnabled",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				notify("SoundService.RespectFilteringEnabled = " .. tostring(ServiceDictionary.SoundService.RespectFilteringEnabled))
-			end
-		},
-		["goto_nearest_spawn"] = {
-			["ListName"] = "goto_nearest_spawn",
-			["Description"] = "Teleport to the nearest SpawnLocation.",
-			["Aliases"] = {},
-			["Function"] = function(args, speaker)
-				local SpawnLocations = {}
-				for index,value in pairs(workspace:GetDescendants()) do
-					if value:IsA("SpawnLocation") and value.Enabled == true and value.Neutral == true then
-						table.insert(SpawnLocations, value)
-					end
-				end
-				local ShortestDistance = 1e100
-				local ClosestSpawnLocation
-				for index,value in pairs(SpawnLocations) do
-					local Distance = (speaker.Character:FindFirstChild("HumanoidRootPart").Position - value.Position).Magnitude
-					if Distance < ShortestDistance then
-						ShortestDistance = Distance
-						ClosestSpawnLocation = value
-					end
-				end
-				speaker.Character:MoveTo(ClosestSpawnLocation.Position)
-			end,
-		},
-	},
-}
+plugin.Commands["forcemouseiconbehavior"] = {
+	ListName = ("forcemouseiconbehavior");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		local UserInputService = game:GetService("UserInputService")
+		if string.lower(arguments[1]) == string.lower("hide", 1, string.len(arguments[1])) then
+			UserInputService.ForceMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceHide
+			return
+		elseif string.lower(arguments[1]) == string.lower("show", 1, string.len(arguments[1])) then
+			UserInputService.ForceMouseIconBehavior = Enum.OverrideMouseIconBehavior.ForceShow
+			return
+		end
+		return notify("Invalid mouse icon behavior.")
+	end;
+};
 
 return plugin
