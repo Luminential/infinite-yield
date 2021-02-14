@@ -201,16 +201,20 @@ plugin.Commands["technology"] = {
 	Aliases = {};
 	Function = function(arguments, speaker)
 		local Lighting = game:GetService("Lighting")
-		if string.lower(arguments[1]) == string.sub("future", 1, string.len(arguments[1])) then
-			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Future);
-		elseif string.lower(arguments[1]) == string.sub("shadowmap", 1, string.len(arguments[1])) then
-			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.ShadowMap);
-		elseif string.lower(arguments[1]) == string.sub("voxel", 1, string.len(arguments[1])) then
-			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Voxel);
-		elseif string.lower(arguments[1]) == string.sub("compatibility", 1, string.len(arguments[1])) then
-			return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Compatibility);
+		if sethiddenproperty and typeof(sethiddenproperty) == "function" then
+			if string.lower(arguments[1]) == string.sub("future", 1, string.len(arguments[1])) then
+				return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Future);
+			elseif string.lower(arguments[1]) == string.sub("shadowmap", 1, string.len(arguments[1])) then
+				return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.ShadowMap);
+			elseif string.lower(arguments[1]) == string.sub("voxel", 1, string.len(arguments[1])) then
+				return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Voxel);
+			elseif string.lower(arguments[1]) == string.sub("compatibility", 1, string.len(arguments[1])) then
+				return sethiddenproperty(Lighting, ("Technology"), Enum.Technology.Compatibility);
+			end
+		else
+			return coroutine.wrap(notify)("Your exploit does not support \'sethiddenproperty\'.")
 		end
-		coroutine.wrap(notify)(string.format("Unknown Technology: %s", arguments[1]))
+		return coroutine.wrap(notify)(string.format("Unknown Technology: %s", arguments[1]))
 	end;
 };
 
