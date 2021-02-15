@@ -165,6 +165,7 @@ plugin.Commands["emote"] = {
 		local Character = speaker.Character;
 		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
 		local Animator = Humanoid:FindFirstChildWhichIsA("Animator");
+		local Name = #arguments > 1 and table.concat(arguments, " ") or arguments[1]
 		for index, value in pairs(emoteSourceIds) do
 			local i = tostring(index);
 			if string.lower(arguments[1]) == string.lower(string.sub(i, 1, string.len(arguments[1]))) then
@@ -331,20 +332,81 @@ plugin.Commands["proximityprompts"] = {
 plugin.Commands["cameraoffset"] = {
 	ListName = ("cameraoffset / camoffset [x y z]"),
 	Description = (""),
-	Aliases = {},
+	Aliases = {"camoffset"},
 	Function = function(arguments, speaker)
 		local Character = speaker.Character
 		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-		if arguments[1] and typeof(arguments[1]) == "number" then
-			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(0, 1, 1)) + Vector3.new(arguments[1], 0, 0)
+		for index, value in pairs(arguments) do
+			_, arguments[index] = pcall(tonumber, value)
 		end
-		if arguments[2] and typeof(arguments[2]) == "number" then
-			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(0, 1, 0)) + Vector3.new(0, arguments[2], 0)
+		if #arguments > 3 then
+			return coroutine.wrap(notify)("Too many arguments.")
 		end
-		if arguments[3] and typeof(arguments[3]) == "number" then
-			Humanoid.CameraOffset = (Humanoid.CameraOffset * Vector3.new(1, 1, 0)) + Vector3.new(0, 0, arguments[3])
-		end
+		Humanoid.CameraOffset = Vector3.new(unpack(arguments))
 	end
-}
+};
+
+plugin.Commands["qualitylevel"] = {
+	ListName = ("qualitylevel"),
+	Description = (""),
+	Aliases = {},
+	Function = function(arguments, speaker)
+		local RenderSettings = game:GetService("RenderSettings")
+		if arguments[1] and typeof(arguments[1]) == "number" then
+			RenderSettings.QualityLevel = Enum.QualityLevel[string.format("Level%s", tostring(arguments[1]))]
+		elseif arguments[1] and typeof(arguments[1]) == "string" then
+			if string.lower(arguments[1]) == string.lower(string.sub("automatic", 1, string.len(arguments[1]))) then
+				RenderSettings.QualityLevel = Enum.QualityLevel.Automatic
+			elseif string.lower(arguments[1]) == string.lower(string.sub("maximum", 1, string.len(arguments[1]))) then
+				RenderSettings.QualityLevel = Enum.QualityLevel.Level21
+			elseif string.lower(arguments[1]) == string.lower(string.sub("minimum", 1, string.len(arguments[1]))) then
+				RenderSettings.QualityLevel = Enum.QualityLevel.Level01
+			end
+		end
+	end,
+};
+
+plugin.Commands["antifling"] = {
+	ListName = ("antifling");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		local StarterPlayer = game:GetService("StarterPlayer")
+		local RunService = game:GetService("RunService")
+		for index, value in pairs(getgenv().shawnjbragdon) do
+			if value and typeof(value) == "RBXScriptConnection" and tostring(index) == "antifling" then
+				value:Disconnect()
+			end
+		end
+		getgenv().shawnjbragdon["antifling"] = RunService.Stepped:Connect(function()
+			for _, Player in pairs(Players:GetPlayers()) do
+				if Player.Character and Player.Character:IsDescendantOf(workspace) then
+					for _, BasePart in pairs(Player.Character:GetDescendants()) do
+						if BasePart:IsA("BasePart") then
+							BasePart.CanCollide = false
+						end
+					end
+				end
+			end
+		end)
+		coroutine.wrap(notify)("Anti-fling Enabled.")
+	end;
+};
+
+plugin.Commands["noantifling"] = {
+	ListName = ("noantifling / unantifling");
+	Description = ("");
+	Aliases = {};
+	Function = function(arguments, speaker)
+		for index, value in pairs(getgenv().shawnjbragdon) do
+			if value and typeof(value) == "RBXScriptConnection" and tostring(index) == "antifling" then
+				value:Disconnect()
+			end
+		end
+		coroutine.wrap(notify)("Anti-fling Disabled.")
+	end
+};
+
+
 
 return plugin
